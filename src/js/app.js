@@ -55,16 +55,11 @@ function http() {
 }
 
 const myHttp = http();
-// myHttp.post('https://jsonplaceholder.typicode.com/posts' , {
-//     title: 'foo',
-//     body: 'bar',
-//     userId: 1,
-// }, {'Content-type' : 'application/json'},(err,resp) => {
-//     console.log(err,resp)
-// });
+
 const newsService = (function () {
     const apiKey = 'a52d41af1dec485b99285c84db3df824';
     const apiUrl = 'https://newsapi.org/v2';
+    
 
     return { 
         topHeadlines(country = 'ua' , cb) {
@@ -74,7 +69,11 @@ const newsService = (function () {
         everything(query, cb) {
             myHttp.get(`${apiUrl}/everything?q=${query}&apiKey=${apiKey}`,cb);
 
-        }
+        },
+        categories(country,categories, cb) {
+            myHttp.get(`${apiUrl}/top-headlines?country=${country}&category=${categories}&apiKey=${apiKey}`,cb,);
+
+        },
     };
 
 })();
@@ -82,10 +81,12 @@ const newsService = (function () {
 const form = document.forms['newsControls'];
 const countrySelect = form.elements['country'];
 const searchInput = form.elements['search'];
+const categorySelect = form.elements['categories'];
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     loadNews();
+    form.reset();
 })
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -98,23 +99,25 @@ function loadNews() {
     showLoader();
     const country = countrySelect.value;
     const searchText = searchInput.value;
-   
+    const categories = categorySelect.value;
 
-    if(!searchText) {
-        newsService.topHeadlines(country ,onGetResponse);
-    }else {
-        newsService.everything(searchText ,onGetResponse);
+    if(categories) {
+        newsService.categories(country,categories, onGetResponse);
+    }else if(!searchText) {
+        newsService.topHeadlines(country, onGetResponse);
+    } else {
+        newsService.everything(searchText, onGetResponse);
     }    
 }
 
 function onGetResponse(err, res) {
     removeLoader();
     if(err) {
-        showAlert(err, 'msg-error');
+        showAlert(err, 'error-msg');
         return;
     }    
     if(!res.articles.length) {
-        // show empty msg dz
+        showEmptyMsg(res.articles.length, 'error-msg');
         return;
     }
     renderNews(res.articles);
@@ -163,6 +166,10 @@ function newsTemplate({urlToImage, title, url, description}) {
 
 function showAlert(msg, type = 'success') {
     M.toast({html: msg, classes: type});
+
+}
+function showEmptyMsg(msg, type = 'error') {
+    M.toast({html:`Unfortunately, your search returned no results`, classes: type});
 
 }
  

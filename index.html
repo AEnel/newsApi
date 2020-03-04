@@ -15,7 +15,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="src/css/style.css" />
   </head>
   <body>
     <nav class="blue lighten-2">
@@ -33,10 +33,23 @@
                   <span class="card-title">Search news</span>
                   <div class="input-field">
                     <select name="country" id="country">
+                      <option value="ua" selected></option>
                       <option value="ua">Ukraine</option>
-                      <option value="us">United States</option>
+                      <option value="us">United States</option>                      
+                      <option value="fr">France</option>
                     </select>
                     <label>Choose your country</label>
+                  </div><div class="input-field">
+                    <select name="categories" id="categories">
+                      <option value='' selected></option>
+                      <option value="business">business</option>
+                      <option value="entertainment">entertainment</option>
+                      <option value="technology">technology</option>
+                      <option value="sports">sports</option>
+                      <option value="science">science</option>
+                      <option value="health">health</option>
+                    </select>
+                    <label>Choose category</label>
                   </div>
                   <div class="input-field">
                     <input
@@ -68,10 +81,8 @@
       <div class="container">
         <div class="row grid-container"></div>
       </div>
-    </div>
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <!-- <script src="app.js"></script> -->
-     <script src="ajaxtry.js"></script>
+    </div>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>    
+     <script src="src/js/app.js"></script>
   </body>
 </html>
